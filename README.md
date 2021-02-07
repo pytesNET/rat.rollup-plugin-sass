@@ -1,20 +1,22 @@
 @RAT - SASS Rollup Plugin
 =========================
 
-A SASS / SCSS Compiler and Bundler Plugin for [rollup](https://rollupjs.org), which is especially designed for all 
-pytesNET developed rat products. Of course, you can use this rollup plugin for your own packages as well, just keep in 
-mind, that the functionality is designed specifically for your own product lines.
+A SASS / SCSS Compiler and Bundler Plugin for [rollup](https://rollupjs.org), which is mainly designed for our own 
+rat and tail products and packages. It supports SourceMaps, relative SourceMap Source URLs and does NOT bundle per 
+default, rather it stores each stylesheet separately unless the bundle option is passed additionally.
 
-This is a highly adapted, TypeScript-written and sourceMap supporting fork from [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss). 
+This package is highly inspired by [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss). 
 
 
 Differences to [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss)
 ----------------------------------------
 
--   Support for SourceMaps.
--   Support for bundled and separate stylesheets.
--   Uses the Rollup Native assets emit management.
+-   Support for SourceMaps (+ relative SourceMap Source URLs).
+-   Support for separate but also bundled stylesheets.
+-   Uses the Rollup Native assets emit management and configurations.
+-   Adds a few more options, such as banner and footer.
 -   Requires node.js version 14.13.0 or above.
+-   Written in TypeScript.
 -   Does not support postcss and (pre-) processors in general.
 -   Does not support using other SASS libraries (DartSASS is the only supported lib).
 -   Fails on error per default (not changable).
@@ -57,6 +59,7 @@ export default {
 };
 ```
 
+
 ### Usage of RatSassOutput
 
 The `RatSassOutput` plugin can only be used with `RatSass` together.
@@ -71,19 +74,19 @@ export default {
             file: 'dist/rollup-sass.js',
             format: 'cjs',
             plugins: [
-                RatSassOutput()
+                RatSassOutput(/* Provide output-related options */)
             ]
         },
         {
             file: 'dist/rollup-sass.js',
             format: 'cjs',
             plugins: [
-                RatSassOutput()
+                RatSassOutput(/* Provide output-related options */)
             ]
         }
     ],
     plugins: [
-        RatSass()
+        RatSass(/* Provide Basic options */)
     ]
 };
 ```
@@ -110,6 +113,12 @@ export default {
 Configuration
 -------------
 
+### banner
+> Available for: `RatSass` and `RatSassOutput`
+
+*Description*
+
+
 ### exclude
 > Available for: `RatSass` and `RatSassSkip`
 
@@ -118,12 +127,30 @@ array of patterns. If options.include is omitted or has zero length, filter will
 ID must match one or more of the picomatch patterns, and must not match any of the options.exclude patterns.
 
 
+### footer
+> Available for: `RatSass` and `RatSassOutput`
+
+*Description*
+
+
 ### include
 > Available for: `RatSass` and `RatSassSkip`
 
 Rollup filter configuration: A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or 
 array of patterns. If options.include is omitted or has zero length, filter will return true by default. Otherwise, an 
 ID must match one or more of the picomatch patterns, and must not match any of the options.exclude patterns.
+
+
+### prefix
+> Available for: `RatSass` and `RatSassOutput`
+
+*Description*
+
+
+### sourceMapUrls
+> Available for: `RatSass` and `RatSassOutput`
+
+*Description*
 
 
 ### SASS Configuration
@@ -210,7 +237,6 @@ Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#sou
 Copyright & License
 -------------------
 
-Written by SamBrishes (sam@pytes.net) and Lenivyy (lenivyy@pytes.net).<br />
-This is a highly adapted fork from [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss).
+Written by SamBrishes (sam@pytes.net) and Lenivyy (lenivyy@pytes.net).
 
 Published under the MIT license, Copyright &copy; 2020 - 2021 pytesNET.
