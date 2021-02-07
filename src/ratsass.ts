@@ -64,7 +64,7 @@ function RatSass(config: RatSassPluginConfig = { }) {
             name: emitname.join('.'),
             source: code
         });
-        return{
+        return {
             code: '',
             map: { mappings: '' }
         };

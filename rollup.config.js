@@ -9,7 +9,7 @@ export default {
             format: 'cjs'
         },
         {
-            file: 'dist/rollup-sass.es.js',
+            file: 'dist/rollup-sass.mjs',
             format: 'es'
         }
     ],

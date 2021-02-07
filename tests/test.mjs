@@ -30,7 +30,7 @@ test('RatSass - Default', async (t) => {
 /*
  |  DEFAULT WITH SOURCEMAP
  */
-test('RatSass - Default with SourceMap', async (t) => {
+test('RatSass - Default with SourceMap [Rollup]', async (t) => {
     const bundle = await rollup({
         input: 'tests/default/index.js',
         plugins: [
@@ -42,6 +42,63 @@ test('RatSass - Default with SourceMap', async (t) => {
             file: 'tests/default/test.js',
             format: 'cjs',
             sourcemap: true
+        }
+    });
+    const expected = [
+        'html, body {\n  color: red;\n}\nhtml div, body div {\n  color: orange;\n}\n\n/*# sourceMappingURL=index-4cda8f14.css.map */',
+        '{"version":3,"sourceRoot":"","sources":["stdin"],"names":[],"mappings":"AACA;EACI;;AAEA;EACI","file":"index-4cda8f14.css"}'
+    ];
+
+    // Compare Result
+    t.equals([output[1].source, output[2].source], expected);
+});
+
+
+/*
+ |  DEFAULT WITH SOURCEMAP
+ */
+test('RatSass - Default with SourceMap [RatSass]', async (t) => {
+    const bundle = await rollup({
+        input: 'tests/default/index.js',
+        plugins: [
+            RatSass({
+                sourceMap: true
+            })
+        ]
+    });
+    const { output } = await bundle.generate({
+        output: {
+            file: 'tests/default/test.js',
+            format: 'cjs'
+        }
+    });
+    const expected = [
+        'html, body {\n  color: red;\n}\nhtml div, body div {\n  color: orange;\n}\n\n/*# sourceMappingURL=index-4cda8f14.css.map */',
+        '{"version":3,"sourceRoot":"","sources":["stdin"],"names":[],"mappings":"AACA;EACI;;AAEA;EACI","file":"index-4cda8f14.css"}'
+    ];
+
+    // Compare Result
+    t.equals([output[1].source, output[2].source], expected);
+});
+
+
+/*
+ |  DEFAULT WITH CUSTOMIZED OUTPUT
+ */
+test('RatSass - Default with customized Output', async (t) => {
+    const bundle = await rollup({
+        input: 'tests/default/index.js',
+        plugins: [
+            RatSass({
+                outDir: './dist/css',
+                sourceMap: true
+            })
+        ]
+    });
+    const { output } = await bundle.generate({
+        output: {
+            file: 'tests/default/test.js',
+            format: 'cjs'
         }
     });
     const expected = [

@@ -2,9 +2,10 @@
     "name": "@rat.md/rollup-plugin-sass",
     "version": "0.1.0-alpha",
     "status": "alpha",
-    "description": "This SASS / SCSS rollup plugin is especially designed for the development of our rat products.",
+    "description": "A SASS / SCSS rollup plugin, especially designed for the development of our rat products.",
     "keywords": [
         "rollup-plugin",
+        "rollup",
         "sass",
         "scss",
         "css",
@@ -56,7 +57,7 @@
     },
     "devDependencies": {
         "@rollup/plugin-typescript": "^8.1.1",
-        "@types/node": "^14.14.25",
+        "@types/node": "^14.13.0",
         "rollup": "^2.33.3",
         "tslib": "^2.1.0",
         "typescript": "^4.1.3",

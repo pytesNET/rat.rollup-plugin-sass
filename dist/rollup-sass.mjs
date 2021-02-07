@@ -1,12 +1,38 @@
-import { dirname } from 'path';
+import { dirname, basename } from 'path';
 import { createFilter } from 'rollup-pluginutils';
 
-require('sass');
+const sass = require('sass');
 function RatSass(config = {}) {
     const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
     const includes = config.includePaths || ['node_modules'];
     includes.push(process.cwd());
-    const transform = (code, id) => {
+    const compile = (styles, overwrite) => {
+        try {
+            let data = sass.renderSync(Object.assign({
+                data: styles,
+                includePaths: includes
+            }, config, overwrite));
+            return {
+                css: data.css.toString(),
+                map: (data.map || "").toString()
+            };
+        }
+        catch (e) {
+            if (e.line && e.column) {
+                return {
+                    error: e.message,
+                    position: {
+                        line: e.line,
+                        column: e.column
+                    }
+                };
+            }
+            else {
+                return { error: e.message };
+            }
+        }
+    };
+    const transform = function (code, id) {
         if (!filter(id)) {
             return;
         }
@@ -15,24 +41,52 @@ function RatSass(config = {}) {
             let files = Array.isArray(config.watch) ? config.watch : [config.watch];
             files.forEach((file) => this.addWatchFile(file));
         }
-        if (!config.output) {
-            return {
-                code: '',
-                map: { mappings: '' }
-            };
-        }
+        let emitname = basename(id).split('.');
+        emitname[emitname.length - 1] = 'css';
+        this.emitFile({
+            type: 'asset',
+            name: emitname.join('.'),
+            source: code
+        });
         return {
             code: '',
             map: { mappings: '' }
         };
     };
-    const generateBundle = (options) => {
-        if (config.output === false) {
-            return;
+    const generateBundle = function (options, bundle, isWrite) {
+        if (typeof config.sourceMap === 'undefined') {
+            config.sourceMap = options.sourcemap !== false && options.sourcemap !== 'hidden';
+            if (options.sourcemap === 'inline') {
+                config.sourceMapEmbed = true;
+            }
+            if (options.sourcemapExcludeSources) {
+                config.sourceMapContents = true;
+            }
         }
-        if (config.output === true) ;
-        if (typeof config.output === 'string') ;
-        if (typeof config.output === 'function') ;
+        let keys = Object.keys(bundle);
+        for (let name of keys) {
+            if (name.lastIndexOf('.css') !== name.length - 4) {
+                continue;
+            }
+            let file = bundle[name];
+            let data = compile(file.source, {
+                outFile: name
+            });
+            if ('error' in data) {
+                this.error(data.error, data.position);
+                continue;
+            }
+            file.source = data.css;
+            if (data.map && data.map.length > 0) {
+                bundle[name + '.map'] = {
+                    fileName: file.fileName + '.map',
+                    name: file.name + '.map',
+                    source: data.map,
+                    type: 'asset',
+                    isAsset: true
+                };
+            }
+        }
     };
     return {
         name: "rat-sass",
