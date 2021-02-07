@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "alwaysStrict": false,
+        "baseUrl": ".",
+        "lib": ["ES5", "ES6"],
+        "locale": "en",
+        "module": "ES6",
+        "moduleResolution": "node",
+        "newLine": "lf",
+        "removeComments": true,
+        "sourceMap": false,
+        "target": "ES6",
+        "typeRoots": [
+            "./src/types",
+            "node_modules/@types"
+        ]
+    },
+    "exclude": [
+        "./rollup.config.js",
+        "./dist/*",
+        "./src/build/*",
+        "./tests"
+    ]
+}
