@@ -27,6 +27,8 @@ all respective style-imports.
 ### Usage of RatSass
 
 ```javascript
+import { RatSass } from '@rat.md/rollup-plugin-sass';
+
 export default {
     input: 'src/index.ts',
     output: {
@@ -41,7 +43,11 @@ export default {
 
 ### Usage of RatSassOutput
 
+The `RatSassOutput` plugin can only be used with `RatSass` together.
+
 ```javascript
+import { RatSass, RatSassOutput } from '@rat.md/rollup-plugin-sass';
+
 export default {
     input: 'src/index.ts',
     output: [
@@ -70,6 +76,8 @@ export default {
 ### Usage of RatSassSkip
 
 ```javascript
+import { RatSassSkip } from '@rat.md/rollup-plugin-sass';
+
 export default {
     input: 'src/index.ts',
     output: {
@@ -87,12 +95,11 @@ Configuration
 -------------
 
 ### exclude
-```
-Available for: `RatSass`, `RatSassSkip`
-```
+> Available for: `RatSass` and `RatSassSkip`
 
 Rollup filter configuration: A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or 
-array of patterns. If options.include is omitted or has zero length, filter will return true by default. Otherwise, an ID must match one or more of the picomatch patterns, and must not match any of the options.exclude patterns.
+array of patterns. If options.include is omitted or has zero length, filter will return true by default. Otherwise, an 
+ID must match one or more of the picomatch patterns, and must not match any of the options.exclude patterns.
 
 
 ### include
