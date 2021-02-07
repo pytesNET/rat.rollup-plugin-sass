@@ -5,6 +5,8 @@ A SASS / SCSS Compiler and Bundler Plugin for [rollup](https://rollupjs.org), wh
 pytesNET developed rat products. Of course, you can use this rollup plugin for your own packages as well, just keep in 
 mind, that the functionallity is designed for our own product lines only.
 
+This is a highly adapted and sourceMap supporting fork from [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss). 
+
 
 Usage
 -----
@@ -17,7 +19,7 @@ The `@rat.md/rollup-plugin-sass` package exports 3 rollup plugins:
 
 The `RatSass` plugin can only be used in the outer scoped `plugins` configuration object and will take over the whole 
 SASS handling including the output generation / bundling, unless the additional `RatSassOutput` plugin is available in 
-the innter scoped `output.plugins` configuration set. This allows you to generate different CSS stylesheets on all your 
+the inner scoped `output.plugins` configuration set. This allows you to generate different CSS stylesheets on all your 
 defined outputs, ex.: creating a minified and unminified stylesheet.
 
 The additional `RatSassSkip` handler can also only be used in the outer space `plugins` object and allows to just strip 
@@ -103,6 +105,11 @@ ID must match one or more of the picomatch patterns, and must not match any of t
 
 
 ### include
+> Available for: `RatSass` and `RatSassSkip`
+
+Rollup filter configuration: A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or 
+array of patterns. If options.include is omitted or has zero length, filter will return true by default. Otherwise, an 
+ID must match one or more of the picomatch patterns, and must not match any of the options.exclude patterns.
 
 
 Copyright & License
