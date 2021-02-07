@@ -114,7 +114,8 @@ ID must match one or more of the picomatch patterns, and must not match any of t
 
 ### SASS Configuration
 
-The following SASS options are available on the latest published version.
+The following SASS options are available on the latest published version, keep in mind that RatSass uses DartSass and 
+is not compatible nor configurable for the NodeSass, LibSass or RubySass packages.
 
 
 #### includePaths
@@ -156,7 +157,7 @@ Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#omi
 #### outFile
 > Available for: `RatSass` and `RatSassOutput`
 
-This option should be avoided whenever if possible, since RatSass pushs this option based on the rollup configuration. 
+This option should be avoided whenever possible, since RatSass pushs this option based on the used rollup configuration. 
 Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#outfile) for more information.
 
 
