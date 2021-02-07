@@ -1,26 +1,27 @@
 @RAT - SASS Rollup Plugin
 =========================
 
-A SASS / SCSS Compiler and Bundler Plugin for [rollup](https://rollupjs.org), which is especially 
-designed for all pytesNET developed rat products.
+A SASS / SCSS Compiler and Bundler Plugin for [rollup](https://rollupjs.org), which is especially designed for all 
+pytesNET developed rat products. Of course, you can use this rollup plugin for your own packages as well, just keep in 
+mind, that the functionallity is designed for our own product lines only.
 
 
 Usage
 -----
 
-The @rat.md/rollup-plugin-sass package exports 3 rollup plugins: 
+The `@rat.md/rollup-plugin-sass` package exports 3 rollup plugins: 
 
 -   `RatSass`, the main SASS compiler / handler
 -   `RatSassOutput`, an additional output plugin handler
 -   `RatSassSkip`, an SASS import skipper / ignore handler
 
-The `RatSass` plugin can only be used in the outer space `plugins` configuration object and will 
-take over the whole SASS handling including the output generation / bundling, unless `RatSassOutput` 
-is passed in the inner scoped `output.plugins` configuration. This allows to generate different 
-CSS stylesheets - on different outputs - for example a minified and unminfied version.
+The `RatSass` plugin can only be used in the outer scoped `plugins` configuration object and will take over the whole 
+SASS handling including the output generation / bundling, unless the additional `RatSassOutput` plugin is available in 
+the innter scoped `output.plugins` configuration set. This allows you to generate different CSS stylesheets on all your 
+defined outputs, ex.: creating a minified and unminified stylesheet.
 
-The additional `RatSassSkip` handler can also only be used in the outer space `plugins` object and 
-allows to just strip all respective style-imports.
+The additional `RatSassSkip` handler can also only be used in the outer space `plugins` object and allows to just strip 
+all respective style-imports.
 
 
 ### Usage of RatSass
@@ -80,6 +81,21 @@ export default {
     ]
 };
 ```
+
+
+Configuration
+-------------
+
+### exclude
+```
+Available for: `RatSass`, `RatSassSkip`
+```
+
+Rollup filter configuration: A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or 
+array of patterns. If options.include is omitted or has zero length, filter will return true by default. Otherwise, an ID must match one or more of the picomatch patterns, and must not match any of the options.exclude patterns.
+
+
+### include
 
 
 Copyright & License
