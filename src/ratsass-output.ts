@@ -2,7 +2,7 @@
 /*
  |  ROLLUP PLUGIN
  */
-function RatSassOutput(config: RatSASS_Config = { }) {
+function RatSassOutput(config: RatSassOutputConfig = { }) {
 
 }
 

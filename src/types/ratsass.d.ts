@@ -1,29 +1,5 @@
 
-declare interface RatSASS_Config extends SASS_Config {
-    /*
-     |  BANNER TO USE ON STYLESHEET
-     |  @since          0.1.0
-     |
-     |  @values
-     |      string      The banner text, which sould prepend the compiled stylesheet.
-     |
-     |  @default
-     |      ""
-     */
-    banner?: string;
-
-    /*
-     |  OUTPUT STATEMENT
-     |  @since          0.1.0
-     |
-     |  @values
-     |      bool        TRUE to bundle all included stylesheet in one file, FALSE to store them separately.
-     |
-     |  @default
-     |      [ ]
-     */
-    bundle?: boolean;
-
+declare interface RatSassBasicConfig {
     /*
      |  EXCLUDE FILE FILTER
      |  @since          0.1.0
@@ -51,6 +27,32 @@ declare interface RatSASS_Config extends SASS_Config {
      |      [ ... ]
      */
     include?: string | RegExp | Array<string | RegExp>;
+}
+
+declare interface RatSassOutputConfig extends RatSassBasicConfig {
+    /*
+     |  BANNER TO USE ON STYLESHEET
+     |  @since          0.1.0
+     |
+     |  @values
+     |      string      The banner text, which sould prepend the compiled stylesheet.
+     |
+     |  @default
+     |      ""
+     */
+    banner?: string;
+
+    /*
+     |  OUTPUT STATEMENT
+     |  @since          0.1.0
+     |
+     |  @values
+     |      bool        TRUE to bundle all included stylesheet in one file, FALSE to store them separately.
+     |
+     |  @default
+     |      [ ]
+     */
+    bundle?: boolean;
 
     /*
      |  OUTPUT STATEMENT
@@ -66,7 +68,9 @@ declare interface RatSASS_Config extends SASS_Config {
      |      [ ]
      */
     output?: boolean | string | Function;
+}
 
+declare interface RatSassPluginConfig extends RatSassOutputConfig, SassConfig {
     /*
      |  WATCHER
      |  @since          0.1.0
@@ -81,13 +85,12 @@ declare interface RatSASS_Config extends SASS_Config {
     watch?: string | string[];
 }
 
-declare interface RatSASS_RenderedChunk {
+declare interface RatSassRenderedChunk {
     css: string,
     map?: string
 }
 
-declare interface RatSASS_ErrorObject {
+declare interface RatSassErrorHandler {
     error: string,
     position?: { column: number; line: number }
 }
-

@@ -1,22 +1,21 @@
 
-import { OutputOptions, SourceDescription } from 'rollup';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { basename, dirname } from 'path';
+import { OutputAsset, OutputBundle, OutputOptions, SourceDescription } from 'rollup';
 import { createFilter } from 'rollup-pluginutils';
 
 const sass = require('sass');
 
+
 /*
  |  ROLLUP PLUGIN
  */
-function RatSass(config: RatSASS_Config = { }) {
+function RatSass(config: RatSassPluginConfig = { }) {
     const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
-    const chunks = { };
     const includes = config.includePaths || ['node_modules'];
     includes.push(process.cwd());
 
     // Compile Function
-    const compile = (styles: string, overwrite?: RatSASS_Config): RatSASS_RenderedChunk | RatSASS_ErrorObject => {
+    const compile = (styles: string, overwrite?: RatSassPluginConfig): RatSassRenderedChunk | RatSassErrorHandler => {
         try {
             let data = sass.renderSync(Object.assign({
                 data: styles,
@@ -43,7 +42,7 @@ function RatSass(config: RatSASS_Config = { }) {
     };
 
     // Transform Function
-    const transform = (code: string, id: string): SourceDescription => {
+    const transform = function (code: string, id: string): SourceDescription {
         if (!filter(id)) {
             return;
         }
@@ -55,41 +54,65 @@ function RatSass(config: RatSASS_Config = { }) {
             files.forEach((file) => this.addWatchFile(file));
         }
 
-        // Disable Output
-        if (!config.output) {
-            return {
-                code: '',
-                map: { mappings: '' }
-            }
-        }
+        // Format Name
+        let emitname = basename(id).split('.');
+        emitname[emitname.length - 1] = 'css';
 
         // Handle Styles
-        chunks[id] = code;
-        return {
+        this.emitFile({
+            type: 'asset',
+            name: emitname.join('.'),
+            source: code
+        });
+        return{
             code: '',
             map: { mappings: '' }
         };
     };
 
     // Generate Bundle Function
-    const generateBundle = (options: OutputOptions) => {
-        if (config.output === false) {
-            return;
+    const generateBundle = function (options: OutputOptions, bundle: OutputBundle, isWrite: boolean) {
+        let source = '';
+
+        // Trickle SourceMap Configuration
+        if (typeof config.sourceMap === 'undefined') {
+            config.sourceMap = options.sourcemap !== false && options.sourcemap !== 'hidden';
+            if (options.sourcemap === 'inline') {
+                config.sourceMapEmbed = true;
+            }
+            if (options.sourcemapExcludeSources) {
+                config.sourceMapContents = true;
+            }
         }
 
-        // 
-        if (config.output === true) {
-            
-        }
+        // Loop Styles
+        let keys = Object.keys(bundle);
+        for (let name of keys) {
+            if (name.lastIndexOf('.css') !== name.length - 4) {
+                continue;
+            }
+            let file = bundle[name] as OutputAsset;
 
-        // 
-        if (typeof config.output === 'string') {
+            // Compile SASS
+            let data = compile(file.source as string, {
+                outFile: name
+            });
+            if ('error' in data) {
+                this.error(data.error, data.position);
+                continue;
+            }
 
-        }
-
-        // 
-        if (typeof config.output === 'function') {
-
+            // Yay
+            file.source = data.css;
+            if (data.map && data.map.length > 0) {
+                bundle[name + '.map'] = {
+                    fileName: file.fileName + '.map',
+                    name: file.name + '.map',
+                    source: data.map,
+                    type: 'asset',
+                    isAsset: true   // @deprecated
+                };
+            }
         }
     };
 
@@ -99,59 +122,6 @@ function RatSass(config: RatSASS_Config = { }) {
         transform,
         generateBundle
     };
-
-
-
-    /*
-     |  GENERATE BUNDLE
-     *
-    const _generateBundle = (opts) => {
-        if(options.output === false) {
-            return;
-        }
-        if(typeof options.output === "object") {
-            for(let outputStyle in options.output) {
-                let dest = options.output[outputStyle];
-
-                for(let path in styles) {
-                    let name = basename(path, path.indexOf(".scss") >= 0? ".scss": ".sass");
-                    let store = dest.replace("[name]", name);
-                    let overwrite = { outputStyle: outputStyle };
-
-                    // Handle SourceMap
-                    if("sourceMap" in options) {
-                        if(options.sourceMap === true) {
-                            overwrite.sourceMap = store.slice(store.lastIndexOf("/")+1) + ".map";
-                        } else if(typeof options.sourceMap === "string") {
-                            overwrite.sourceMap = options.sourceMap.replace("[name]", name);
-                        }
-                    }
-
-                    // Render
-                    let data = compile(styles[path], overwrite);
-                    if(!("css" in data) || data.css.length <= 0) {
-                        continue;
-                    }
-
-                    // Check if Directory exists
-                    ensureParentDirsSync(dirname(store))
-
-                    // Write CSS File
-                    let banner = options.banner? options.banner[outputStyle] || "": "";
-                    banner = banner.replace("[name]", name);
-
-                    writeFileSync(store, banner + "\n" + data.css);
-                    if("map" in data && data.map.length >= 0) {
-                        writeFileSync(store + ".map", data.map);
-                        console.log(`\x1b[32mcreated \x1b[32m\x1b[1m${store}, ${store}.map ${getSize(data.css.length)}\x1b[0m`);
-                    } else {
-                        console.log(`\x1b[32mcreated \x1b[32m\x1b[1m${store} ${getSize(data.css.length)}\x1b[0m`);
-                    }
-                }
-            }
-        }
-    }
-    */
 }
 
 // Export Module

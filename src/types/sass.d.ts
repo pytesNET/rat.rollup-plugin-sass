@@ -1,5 +1,5 @@
 
-declare interface SASS_Config {
+declare interface SassConfig {
     /*
      |  THE STYLES, WHICH SHOULD BE COMPILED
      */

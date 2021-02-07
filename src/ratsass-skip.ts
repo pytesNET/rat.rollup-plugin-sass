@@ -5,7 +5,7 @@ import { createFilter } from 'rollup-pluginutils';
 /*
  |  ROLLUP PLUGIN
  */
-function RatSassSkip(config: RatSASS_Config = { }) {
+function RatSassSkip(config: RatSassBasicConfig = { }) {
     const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
 
     // Return Rollup Plugin
