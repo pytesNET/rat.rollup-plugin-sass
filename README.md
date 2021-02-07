@@ -3,9 +3,23 @@
 
 A SASS / SCSS Compiler and Bundler Plugin for [rollup](https://rollupjs.org), which is especially designed for all 
 pytesNET developed rat products. Of course, you can use this rollup plugin for your own packages as well, just keep in 
-mind, that the functionallity is designed for our own product lines only.
+mind, that the functionality is designed specifically for your own product lines.
 
-This is a highly adapted and sourceMap supporting fork from [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss). 
+This is a highly adapted, TypeScript-written and sourceMap supporting fork from [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss). 
+
+
+Differences to [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss)
+----------------------------------------
+
+-   Support for SourceMaps.
+-   Support for bundled and separate stylesheets.
+-   Uses the Rollup Native assets emit management.
+-   Requires node.js version 14.13.0 or above.
+-   Does not support postcss and (pre-) processors in general.
+-   Does not support using other SASS libraries (DartSASS is the only supported lib).
+-   Fails on error per default (not changable).
+-   Skipping SASS imports must be done with `RatSassSkip`.
+-   Provided functions are not (really) compatible.
 
 
 Usage
@@ -113,56 +127,49 @@ ID must match one or more of the picomatch patterns, and must not match any of t
 
 
 ### SASS Configuration
+> Available for: `RatSass` and `RatSassOutput`
 
 The following SASS options are available on the latest published version, keep in mind that RatSass uses DartSass and 
 is not compatible nor configurable for the NodeSass, LibSass or RubySass packages.
 
 
 #### includePaths
-> Available for: `RatSass` and `RatSassOutput`
 
 Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#includepaths) for more information.
 
 
 #### indentedSyntax
-> Available for: `RatSass` and `RatSassOutput`
 
 Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#indentedsyntax) for more information.
 
 
 #### indentType
-> Available for: `RatSass` and `RatSassOutput`
 
 Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#indenttype) for more information.
 
 
 #### indentWidth
-> Available for: `RatSass` and `RatSassOutput`
 
 Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#indentwidth) for more information.
 
 
 #### linefeed
-> Available for: `RatSass` and `RatSassOutput`
 
 Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#linefeed) for more information.
 
 
 #### omitSourceMapUrl
-> Available for: `RatSass` and `RatSassOutput`
 
 Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#omitsourcemapurl) for more information.
 
 
 #### outFile
-> Available for: `RatSass` and `RatSassOutput`
 
 This option should be avoided whenever possible, since RatSass pushs this option based on the used rollup configuration. 
 Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#outfile) for more information.
 
 
 #### outputStyle
-> Available for: `RatSass` and `RatSassOutput`
 
 The default value for this option is based on the [`output.compact`](https://rollupjs.org/guide/en/#outputcompact) 
 rollup configuration. Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#outputstyle) for more 
@@ -170,13 +177,11 @@ information.
 
 
 #### sourceComments
-> Available for: `RatSass` and `RatSassOutput`
 
 Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#sourcecomments) for more information.
 
 
 #### sourceMap
-> Available for: `RatSass` and `RatSassOutput`
 
 The default value for this option is based on the [`output.sourcemap`](https://rollupjs.org/guide/en/#outputsourcemap) 
 rollup configuration. Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#sourcemap) for more 
@@ -184,7 +189,6 @@ information.
 
 
 #### sourceMapContents
-> Available for: `RatSass` and `RatSassOutput`
 
 The default value for this option is based on the [`output.sourcemapExcludeSources`](https://rollupjs.org/guide/en/#outputsourcemapexcludesources) 
 rollup configuration. Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#sourcemapcontents) 
@@ -192,7 +196,6 @@ for more information.
 
 
 #### sourceMapEmbed
-> Available for: `RatSass` and `RatSassOutput`
 
 The default value for this option is based on the [`output.sourcemap`](https://rollupjs.org/guide/en/#outputsourcemap) 
 rollup configuration. Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#sourcemapembed) for 
@@ -200,7 +203,6 @@ more information.
 
 
 #### sourceMapRoot
-> Available for: `RatSass` and `RatSassOutput`
 
 Check out the [related SASS Docs](https://sass-lang.com/documentation/js-api#sourcemaproot) for more information.
 
