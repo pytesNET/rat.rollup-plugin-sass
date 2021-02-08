@@ -18,8 +18,7 @@
     },
     "exclude": [
         "./rollup.config.js",
-        "./dist/*",
-        "./src/build/*",
+        "./dist",
         "./tests"
     ]
 }

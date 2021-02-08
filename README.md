@@ -135,11 +135,12 @@ use the comment syntax) or a function, which receives the current stylesheet fil
 
 ### bundle
 > Available for: `RatSass` and `RatSassOutput`<br>
-> Types: `boolean`
+> Types: `boolean | string`
 
 The RatSass rollup plugin doesn't bundle your stylesheets per default, so each included SASS or SCSS file within your 
 JavaScript or TypeScript project will be compiled into an own file. This option allows you to force the bundeling of 
-all included stylesheets into one single .css file, including one single SourceMap too, of course.
+all included stylesheets into one single .css file, including one single SourceMap too, of course. You can also use 
+a string as value, which defines a name used for the bundle.
 
 
 ### exclude

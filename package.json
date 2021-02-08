@@ -42,7 +42,7 @@
     "scripts": {
         "build": "rollup -c",
         "watch": "rollup -c --watch",
-        "test": "node ./tests/test.mjs"
+        "test": "node --trace-warnings ./tests/test.mjs"
     },
     "main": "dist/rollup-sass.js",
     "module": "dist/rollup-sass.mjs",
