@@ -123,7 +123,7 @@ use the comment syntax) or a function, which receives the current stylesheet fil
 
 ### exclude
 > Available for: `RatSass` and `RatSassSkip`<br>
-> Types: `[picomatch](https://github.com/micromatch/picomatch#globbing-features)`
+> Types: [`picomatch`](https://github.com/micromatch/picomatch#globbing-features)
 
 Rollup filter configuration: A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or 
 array of patterns. If options.include is omitted or has zero length, filter will return true by default. Otherwise, an 
@@ -141,7 +141,7 @@ filename and which MUST return a string.
 
 ### include
 > Available for: `RatSass` and `RatSassSkip`<br>
-> Types: `[picomatch](https://github.com/micromatch/picomatch#globbing-features)`
+> Types: [`picomatch`](https://github.com/micromatch/picomatch#globbing-features)
 
 Rollup filter configuration: A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or 
 array of patterns. If options.include is omitted or has zero length, filter will return true by default. Otherwise, an 
