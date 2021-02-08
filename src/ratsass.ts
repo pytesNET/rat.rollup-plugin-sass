@@ -1,6 +1,6 @@
 
 import { basename, dirname } from 'path';
-import { OutputAsset, OutputBundle, OutputOptions, SourceDescription } from 'rollup';
+import { EmittedAsset, OutputAsset, OutputBundle, OutputOptions, SourceDescription } from 'rollup';
 import { createFilter } from 'rollup-pluginutils';
 
 const sass = require('sass');
@@ -55,24 +55,33 @@ function RatSass(config: RatSassPluginConfig = { }) {
             files.forEach((file) => this.addWatchFile(file));
         }
 
-        // Format Name
-        let emitname = basename(id).split('.');
-        emitname[emitname.length - 1] = 'css';
+        // Handle FileNameHandler
+        if (typeof config.fileNames !== 'undefined') {
+            let emitname = basename(id).split('.');
+            emitname.pop();
 
-        // Handle Styles
-        if (!config.bundle) {
-            this.emitFile({
+            var emitdata: EmittedAsset = {
+                type: 'asset',
+                fileName: config.fileNames.replace(/\[name\]/g, emitname.join('.')),
+                source: code
+            };
+        } else {
+            let emitname = basename(id).split('.');
+            emitname[emitname.length - 1] = 'css';
+
+            var emitdata: EmittedAsset = {
                 type: 'asset',
                 name: emitname.join('.'),
                 source: code
-            });
+            };
+        }
+
+        // Handle Styles
+        if (!config.bundle) {
+            this.emitFile(emitdata);
         } else {
             if (typeof chunks.reference === 'undefined') {
-                chunks.reference = this.emitFile({
-                    type: 'asset',
-                    name: typeof config.bundle === 'string'? config.bundle: emitname.join('.'),
-                    source: ''
-                });
+                chunks.reference = this.emitFile(emitdata);
             }
             chunks[chunks.length++] = code;
         }

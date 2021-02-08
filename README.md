@@ -134,13 +134,12 @@ use the comment syntax) or a function, which receives the current stylesheet fil
 
 
 ### bundle
-> Available for: `RatSass` and `RatSassOutput`<br>
-> Types: `boolean | string`
+> Available for: `RatSass`<br>
+> Types: `boolean`
 
 The RatSass rollup plugin doesn't bundle your stylesheets per default, so each included SASS or SCSS file within your 
 JavaScript or TypeScript project will be compiled into an own file. This option allows you to force the bundeling of 
-all included stylesheets into one single .css file, including one single SourceMap too, of course. You can also use 
-a string as value, which defines a name used for the bundle.
+all included stylesheets into one single .css file, including one single SourceMap too, of course.
 
 
 ### exclude
@@ -150,6 +149,23 @@ a string as value, which defines a name used for the bundle.
 Rollup filter configuration: A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or 
 array of patterns. If options.include is omitted or has zero length, filter will return true by default. Otherwise, an 
 ID must match one or more of the picomatch patterns, and must not match any of the options.exclude patterns.
+
+
+### fileNames
+> Available for: `RatSass`<br>
+> Types: `string | (name: string) => string`
+
+Allows you to overwrite the default used `rollup.assetFileNames` option, which defined where and with which name scheme 
+the stylesheets will be stored / bundled. This option allows you to use the following placeholders:
+
+-   `[extname]`: The file extension with leading dot: `.css` or `.min.css`
+-   `[ext]`: The file extension without leading dot: `css` or `min.css`
+-   `[name]`: The name of the imported stylesheet without any extension
+
+Keep in mind, that this cannot be a relative or absolute path (see [rollup#3507](https://github.com/rollup/rollup/issues/3507)). 
+The according files will be written within the bundled root directory, which is defined by `output.dir`. If you're using 
+`output.file` you should consider to switch to `output.dir` with `output.entryFileNames` instead which leads to the same 
+result when used correctly.
 
 
 ### footer

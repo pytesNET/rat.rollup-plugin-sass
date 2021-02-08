@@ -34,16 +34,6 @@ declare interface RatSassOutputConfig extends RatSassBasicConfig {
     banner?: string | ((name: string) => string);
 
     /*
-     |  OUTPUT STATEMENT
-     |  @since          0.1.0
-     |
-     |  @values
-     |      bool        TRUE to bundle all included stylesheet in one file, FALSE to store them separately.
-     |      string      A name for the bundled stylesheet.
-     */
-    bundle?: boolean | string;
-
-    /*
      |  FOOTER TO USE ON STYLESHEET
      |  @since          0.1.0
      |
@@ -75,6 +65,24 @@ declare interface RatSassOutputConfig extends RatSassBasicConfig {
 }
 
 declare interface RatSassPluginConfig extends RatSassOutputConfig, SassConfig {
+    /*
+     |  BUNDLE STYLESHEETs
+     |  @since          0.1.0
+     |
+     |  @values
+     |      bool        TRUE to bundle all included stylesheet in one file, FALSE to store them separately.
+     */
+    bundle?: boolean;
+
+    /*
+     |  OUTPUT FILE NAMEs
+     |  @since          0.1.0
+     |
+     |  @values
+     |      string      The output filenames for the stylesheets, will overwrite rollup's assetFileNames option.
+     */
+    fileNames?: string;
+
     /*
      |  WATCHER
      |  @since          0.1.0

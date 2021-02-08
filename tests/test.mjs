@@ -177,63 +177,6 @@ test('RatSass - Multiple store separately', async (t) => {
 
 
 /*
- |  MULTIPLE SASS FILES TO BUNDLE
- */
-test('RatSass/Output - Multiple as Bundle with two outputs', async (t) => {
-    const bundle = await rollup({
-        input: 'tests/multiple/index.js',
-        plugins: [
-            RatSass({
-                output: true,
-                bundle: true
-            })
-        ]
-    });
-    const { output } = await bundle.generate({
-        output: {
-            file: 'tests/multiple/test.js',
-            format: 'cjs',
-            plugins: [
-                RatSassOutput({
-                    
-                })
-            ]
-        }
-    });
-
-    t.equal(1, 0);
-});
-
-
-/*
- |  MULTIPLE SASS FILES SEPARATELY
- */
-test('RatSass/Output - Multiple store separately with two outputs', async (t) => {
-    const bundle = await rollup({
-        input: 'tests/multiple/index.js',
-        plugins: [
-            RatSass({
-                output: true
-            })
-        ]
-    });
-    const { output } = await bundle.generate({
-        output: {
-            file: 'tests/multiple/test.js',
-            format: 'cjs',
-            plugins: [
-                RatSassOutput({
-                    
-                })
-            ]
-        }
-    });
-
-    t.equal(1, 0);
-});
-
-
-/*
  |  TEST SKIPPER
  */
 test('RatSassSkip - Skip all stylesheets', async (t) => {

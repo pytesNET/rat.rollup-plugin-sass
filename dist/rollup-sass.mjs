@@ -42,22 +42,30 @@ function RatSass(config = {}) {
             let files = Array.isArray(config.watch) ? config.watch : [config.watch];
             files.forEach((file) => this.addWatchFile(file));
         }
-        let emitname = basename(id).split('.');
-        emitname[emitname.length - 1] = 'css';
-        if (!config.bundle) {
-            this.emitFile({
+        if (typeof config.fileNames !== 'undefined') {
+            let emitname = basename(id).split('.');
+            emitname.pop();
+            var emitdata = {
+                type: 'asset',
+                fileName: config.fileNames.replace(/\[name\]/g, emitname.join('.')),
+                source: code
+            };
+        }
+        else {
+            let emitname = basename(id).split('.');
+            emitname[emitname.length - 1] = 'css';
+            var emitdata = {
                 type: 'asset',
                 name: emitname.join('.'),
                 source: code
-            });
+            };
+        }
+        if (!config.bundle) {
+            this.emitFile(emitdata);
         }
         else {
             if (typeof chunks.reference === 'undefined') {
-                chunks.reference = this.emitFile({
-                    type: 'asset',
-                    name: typeof config.bundle === 'string' ? config.bundle : emitname.join('.'),
-                    source: ''
-                });
+                chunks.reference = this.emitFile(emitdata);
             }
             chunks[chunks.length++] = code;
         }
@@ -163,6 +171,16 @@ function RatSass(config = {}) {
 }
 
 function RatSassOutput(config = {}) {
+    const transform = function () {
+        return;
+    };
+    const generateBundle = function () {
+    };
+    return {
+        name: "rat-sass",
+        transform,
+        generateBundle
+    };
 }
 
 function RatSassSkip(config = {}) {
