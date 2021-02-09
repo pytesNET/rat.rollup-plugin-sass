@@ -1,12 +1,15 @@
 import { dirname, basename } from 'path';
 import { createFilter } from 'rollup-pluginutils';
 
-const sass = require('sass');
-function RatSass(config = {}) {
-    const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
-    const chunks = { length: 0, reference: undefined };
+function RatSassOutput(config = {}) {
+    const sass = require('sass');
     const includes = config.includePaths || ['node_modules'];
     includes.push(process.cwd());
+    const setParentOptions = (parent) => {
+        for (let key in parent) {
+            parent[key];
+        }
+    };
     const compile = (styles, overwrite) => {
         try {
             let data = sass.renderSync(Object.assign({
@@ -33,47 +36,6 @@ function RatSass(config = {}) {
             }
         }
     };
-    const transform = function (code, id) {
-        if (!filter(id)) {
-            return;
-        }
-        includes.push(dirname(id));
-        if ('watch' in config) {
-            let files = Array.isArray(config.watch) ? config.watch : [config.watch];
-            files.forEach((file) => this.addWatchFile(file));
-        }
-        if (typeof config.fileNames !== 'undefined') {
-            let emitname = basename(id).split('.');
-            emitname.pop();
-            var emitdata = {
-                type: 'asset',
-                fileName: config.fileNames.replace(/\[name\]/g, emitname.join('.')),
-                source: code
-            };
-        }
-        else {
-            let emitname = basename(id).split('.');
-            emitname[emitname.length - 1] = 'css';
-            var emitdata = {
-                type: 'asset',
-                name: emitname.join('.'),
-                source: code
-            };
-        }
-        if (!config.bundle) {
-            this.emitFile(emitdata);
-        }
-        else {
-            if (typeof chunks.reference === 'undefined') {
-                chunks.reference = this.emitFile(emitdata);
-            }
-            chunks[chunks.length++] = code;
-        }
-        return {
-            code: '',
-            map: { mappings: '' }
-        };
-    };
     const generateBundle = function (options, bundle, isWrite) {
         if (typeof config.sourceMap === 'undefined') {
             config.sourceMap = options.sourcemap !== false && options.sourcemap !== 'hidden';
@@ -86,14 +48,13 @@ function RatSass(config = {}) {
         }
         let keys = Object.keys(bundle);
         for (let name of keys) {
-            if (name.lastIndexOf('.css') !== name.length - 4) {
+            if (name.lastIndexOf(':css') !== name.length - 4) {
                 continue;
             }
             let file = bundle[name];
-            if (!!config.bundle) {
-                for (let i = 0; i < chunks.length; i++) {
-                    file.source += chunks[i];
-                }
+            file.fileName = file.fileName.substr(0, file.fileName.length - 4);
+            if (config.outputStyle === 'compressed') {
+                file.fileName = file.fileName.replace('.css', '.min.css');
             }
             if (typeof config.prefix !== 'undefined') {
                 if (typeof config.prefix === 'function') {
@@ -164,17 +125,69 @@ function RatSass(config = {}) {
         }
     };
     return {
-        name: "rat-sass",
-        transform,
-        generateBundle
+        name: "rat-sass-output",
+        generateBundle,
+        setParentOptions
     };
 }
 
-function RatSassOutput(config = {}) {
-    const transform = function () {
-        return;
+function RatSass(config = {}) {
+    const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
+    const chunks = { length: 0, reference: undefined };
+    const includes = config.includePaths || ['node_modules'];
+    includes.push(process.cwd());
+    const transform = function (code, id) {
+        if (!filter(id)) {
+            return;
+        }
+        includes.push(dirname(id));
+        if ('watch' in config) {
+            let files = Array.isArray(config.watch) ? config.watch : [config.watch];
+            files.forEach((file) => this.addWatchFile(file));
+        }
+        if (typeof config.fileNames !== 'undefined') {
+            let emitname = basename(id).split('.');
+            emitname.pop();
+            var emitdata = {
+                type: 'asset',
+                fileName: config.fileNames.replace(/\[name\]/g, emitname.join('.')).replace(/\[extname\]/g, '.css') + ':css',
+                source: code
+            };
+        }
+        else {
+            let emitname = basename(id).split('.');
+            emitname[emitname.length - 1] = 'css';
+            var emitdata = {
+                type: 'asset',
+                name: emitname.join('.'),
+                source: code
+            };
+        }
+        if (!config.bundle) {
+            this.emitFile(emitdata);
+        }
+        else {
+            if (typeof chunks.reference === 'undefined') {
+                chunks.reference = this.emitFile(emitdata);
+            }
+            chunks[chunks.length++] = code;
+        }
+        return {
+            code: '',
+            map: { mappings: '' }
+        };
     };
-    const generateBundle = function () {
+    const generateBundle = function (options, bundle, isWrite) {
+        let skipOutput = false;
+        for (let plugin in options.plugins) {
+            if (options.plugins[plugin].name === 'rat-sass-output') {
+                skipOutput = true;
+                break;
+            }
+        }
+        if (!skipOutput) {
+            RatSassOutput(config).generateBundle(options, bundle, isWrite);
+        }
     };
     return {
         name: "rat-sass",

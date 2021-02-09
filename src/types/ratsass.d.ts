@@ -23,7 +23,7 @@ declare interface RatSassBasicConfig {
     include?: string | RegExp | Array<string | RegExp>;
 }
 
-declare interface RatSassOutputConfig extends RatSassBasicConfig {
+declare interface RatSassOutputConfig extends RatSassBasicConfig, SassConfig {
     /*
      |  BANNER TO USE ON STYLESHEET
      |  @since          0.1.0
@@ -64,7 +64,7 @@ declare interface RatSassOutputConfig extends RatSassBasicConfig {
     sourceMapUrls?: boolean | string | ((url: string) => string);
 }
 
-declare interface RatSassPluginConfig extends RatSassOutputConfig, SassConfig {
+declare interface RatSassPluginConfig extends RatSassOutputConfig {
     /*
      |  BUNDLE STYLESHEETs
      |  @since          0.1.0

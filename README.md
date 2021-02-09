@@ -155,11 +155,10 @@ ID must match one or more of the picomatch patterns, and must not match any of t
 > Available for: `RatSass`<br>
 > Types: `string | (name: string) => string`
 
-Allows you to overwrite the default used `rollup.assetFileNames` option, which defined where and with which name scheme 
+Allows you to overwrite the default used `rollup.assetFileNames` option, which defines where and with which name scheme 
 the stylesheets will be stored / bundled. This option allows you to use the following placeholders:
 
--   `[extname]`: The file extension with leading dot: `.css` or `.min.css`
--   `[ext]`: The file extension without leading dot: `css` or `min.css`
+-   `[extname]`: The file extension without leading dot: `css` or `min.css`
 -   `[name]`: The name of the imported stylesheet without any extension
 
 Keep in mind, that this cannot be a relative or absolute path (see [rollup#3507](https://github.com/rollup/rollup/issues/3507)). 
