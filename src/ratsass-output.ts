@@ -126,7 +126,7 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
                             return config.sourceMapUrls.call(url);
                         } else {
                             if (url === 'stdin') {
-                                url = name;
+                                url = name.replace(':css', '');
                             }
                             url = url.replace(/^file\:\/+/, '').replace(process.cwd().replace(/\\/g, '/'), '.');
                             return url;

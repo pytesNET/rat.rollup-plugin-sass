@@ -99,7 +99,7 @@ function RatSassOutput(config = {}) {
                         }
                         else {
                             if (url === 'stdin') {
-                                url = name;
+                                url = name.replace(':css', '');
                             }
                             url = url.replace(/^file\:\/+/, '').replace(process.cwd().replace(/\\/g, '/'), '.');
                             return url;
@@ -189,7 +189,7 @@ function RatSass(config = {}) {
         }
         else {
             let emitname = basename(id).split('.');
-            emitname[emitname.length - 1] = 'css';
+            emitname[emitname.length - 1] = 'css:css';
             var emitdata = {
                 type: 'asset',
                 name: emitname.join('.'),
@@ -222,7 +222,8 @@ function RatSass(config = {}) {
             }
         }
         if (!skipOutput) {
-            let output = RatSassOutput();
+            let output = RatSassOutput(config);
+            output._setInstance({ _getBundle }, includes);
             output.generateBundle.call(this, options, bundle, isWrite);
         }
     };

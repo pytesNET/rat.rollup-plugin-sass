@@ -45,8 +45,8 @@ test('RatSass - Default with SourceMap [Rollup]', async (t) => {
         }
     });
     const expected = [
-        'html, body {\n  color: red;\n}\nhtml div, body div {\n  color: orange;\n}\n\n/*# sourceMappingURL=index-4cda8f14.css.map */',
-        '{"version":3,"sourceRoot":"","sources":["stdin"],"names":[],"mappings":"AACA;EACI;;AAEA;EACI","file":"index-4cda8f14.css"}'
+        'html, body {\n  color: red;\n}\nhtml div, body div {\n  color: orange;\n}\n\n/*# sourceMappingURL=index-93cf0468.css.map */',
+        '{"version":3,"sourceRoot":"","sources":["stdin"],"names":[],"mappings":"AACA;EACI;;AAEA;EACI","file":"index-93cf0468.css"}'
     ];
 
     // Compare Result
@@ -74,8 +74,8 @@ test('RatSass - Default with SourceMap [RatSass]', async (t) => {
         }
     });
     const expected = [
-        'html, body {\n  color: red;\n}\nhtml div, body div {\n  color: orange;\n}\n\n/*# sourceMappingURL=index-4cda8f14.css.map */',
-        '{"version":3,"sourceRoot":"","sources":["stdin"],"names":[],"mappings":"AACA;EACI;;AAEA;EACI","file":"index-4cda8f14.css"}'
+        'html, body {\n  color: red;\n}\nhtml div, body div {\n  color: orange;\n}\n\n/*# sourceMappingURL=index-93cf0468.css.map */',
+        '{"version":3,"sourceRoot":"","sources":["stdin"],"names":[],"mappings":"AACA;EACI;;AAEA;EACI","file":"index-93cf0468.css"}'
     ];
 
     // Compare Result
@@ -107,8 +107,8 @@ test('RatSass - Default with customized output', async (t) => {
         }
     });
     const expected = [
-        '/* Start */\n*,\n*:before,\n*:after {\n  box-sizing: inherit;\n}\n\nhtml, body {\n  color: red;\n}\nhtml div, body div {\n  color: orange;\n}\n\n/* End */\n/*# sourceMappingURL=index-4cda8f14.css.map */',
-        '{\"version\":3,\"sourceRoot\":\"\",\"sources\":[\"./tests/global/index.scss\",\"assets/index-4cda8f14.css\"],\"names\":[],\"mappings\":\"AACA;AAAA;AAAA;EAGI;;;ACHJ;EACI;;AAEA;EACI\",\"file\":\"index-4cda8f14.css\"}'
+        '/* Start */\n*,\n*:before,\n*:after {\n  box-sizing: inherit;\n}\n\nhtml, body {\n  color: red;\n}\nhtml div, body div {\n  color: orange;\n}\n\n/* End */\n/*# sourceMappingURL=index-93cf0468.css.map */',
+        '{\"version\":3,\"sourceRoot\":\"\",\"sources\":[\"./tests/global/index.scss\",\"assets/index-93cf0468.css\"],\"names\":[],\"mappings\":\"AACA;AAAA;AAAA;EAGI;;;ACHJ;EACI;;AAEA;EACI\",\"file\":\"index-93cf0468.css\"}'
     ];
 
     // Compare Result
