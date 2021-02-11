@@ -34,7 +34,7 @@ The most recommended way to get the Rat SASS Plugin is by using npm:
 npm install --save-dev @rat.md/rollup-plugin-sass
 ```
 
-**Important** This Rollup Plugin has ONLY be tested with Rollup 2 (v2.33.3) and REQUIRES node 14.13.0 or above!
+**Important** This Rollup Plugin has ONLY been tested with Rollup 2 (v2.33.3) and REQUIRES node 14.13.0 or above!
 
 
 Usage
