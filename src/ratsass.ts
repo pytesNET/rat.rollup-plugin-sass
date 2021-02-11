@@ -1,6 +1,6 @@
 
 import { basename, dirname } from 'path';
-import { EmittedAsset, OutputBundle, OutputOptions, SourceDescription } from 'rollup';
+import { EmittedAsset, InputOptions, OutputBundle, OutputOptions, SourceDescription } from 'rollup';
 import { createFilter } from 'rollup-pluginutils';
 import RatSassOutput from './ratsass-output';
 
@@ -9,10 +9,32 @@ import RatSassOutput from './ratsass-output';
  |  ROLLUP PLUGIN
  */
 function RatSass(config: RatSassPluginConfig = { }) {
+    var self = null;
+
     const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
     const chunks = { length: 0, reference: undefined };
     const includes = config.includePaths || ['node_modules'];
     includes.push(process.cwd());
+
+    // Get Bundle Function
+    const _getBundle = function () {
+        let result = '';
+        for (let i = 0; i < chunks.length; i++) {
+            result += chunks[i];
+        }
+        return result;
+    };
+    
+    // Get Configuration Function
+    const _getConfig = function () {
+        return config;
+    };
+    
+
+    // Get Includes Function
+    const _getIncludes = function () {
+        return includes;
+    };
 
     // Transform Function
     const transform = function (code: string, id: string): SourceDescription {
@@ -53,6 +75,7 @@ function RatSass(config: RatSassPluginConfig = { }) {
             this.emitFile(emitdata);
         } else {
             if (typeof chunks.reference === 'undefined') {
+                emitdata.source = '@bundle';
                 chunks.reference = this.emitFile(emitdata);
             }
             chunks[chunks.length++] = code;
@@ -63,32 +86,22 @@ function RatSass(config: RatSassPluginConfig = { }) {
         };
     };
 
-    // Generate Bundle Function
+    // generateBundle Function
     const generateBundle = function (options: OutputOptions, bundle: OutputBundle, isWrite: boolean) {
         let skipOutput = false;
-        for (let plugin in options.plugins) {
-            if (options.plugins[plugin].name === 'rat-sass-output') {
-                skipOutput = true;
-                break;
+        if (typeof options.plugins !== 'undefined') {
+            for (let plugin in options.plugins) {
+                if (options.plugins[plugin].name === 'rat-sass-output') {
+                    skipOutput = true;
+                    break;
+                }
             }
         }
 
-        // Handle Bundled Output
-        //if (!!config.bundle) {
-        //    for (let i = 0; i < chunks.length; i++) {
-        //        file.source += chunks[i];
-        //    }
-        //}
-
-        // Justify FileName
-        //file.fileName = file.fileName.substr(0, file.fileName.length - 4);
-        //if (config.outputStyle === 'compressed' && config.fileNames.indexOf('[extname]') >= 0) {
-        //    file.fileName = file.fileName.replace('.css', '.min.css');
-        //}
-
         // Generate Bundle
         if (!skipOutput) {
-            RatSassOutput(config).generateBundle(options, bundle, isWrite)
+            let output = RatSassOutput();
+            output.generateBundle.call(this, options, bundle, isWrite);
         }
     };
 
@@ -96,7 +109,12 @@ function RatSass(config: RatSassPluginConfig = { }) {
     return {
         name: "rat-sass",
         transform,
-        generateBundle
+        generateBundle,
+
+        // Custom Functions
+        _getBundle,
+        _getConfig,
+        _getIncludes
     };
 }
 

@@ -10,7 +10,7 @@ function RatSassSkip(config: RatSassBasicConfig = { }) {
 
     // Return Rollup Plugin
     return {
-        name: 'rat-sass',
+        name: 'rat-sass-skip',
 
         // Transform Function
         transform(code: string, id: string): SourceDescription {

@@ -2,10 +2,11 @@
 =========================
 
 A SASS / SCSS Compiler and Bundler Plugin for [rollup](https://rollupjs.org), which is mainly designed for our own 
-rat and tail products and packages. It supports SourceMaps, relative SourceMap Source URLs and does NOT bundle per 
-default, rather it stores each stylesheet separately unless the bundle option is passed additionally.
+rat and tail products and packages. It supports SourceMaps, relative SourceMap Source URLs, separate assets / 
+stylesheets for middleware developers and many more neat features.
 
-This package is highly inspired by [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss). 
+This package is highly inspired by [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss), but is 
+designed especially for package developers, who want to provide multiple stylesheets for their middleware products.
 
 
 Differences to [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-scss)
@@ -13,14 +14,14 @@ Differences to [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-s
 
 -   Support for SourceMaps (+ relative SourceMap Source URLs).
 -   Support for separate but also bundled stylesheets.
--   Uses the Rollup Native assets emit management and configurations.
+-   Uses the Rollup Native assets environment and a bunch of configurations.
 -   Adds a few more options, such as banner and footer.
 -   Requires node.js version 14.13.0 or above.
 -   Written in TypeScript.
 -   Does not support postcss and (pre-) processors in general.
 -   Does not support using other SASS libraries (DartSASS is the only supported lib).
 -   Fails on error per default (not changable).
--   Skipping SASS imports must be done with `RatSassSkip`.
+-   Skipping SASS imports must be done with `RatSassSkip` instead of `output: false`.
 -   Provided functions are not (really) compatible.
 
 
@@ -56,6 +57,9 @@ all respective style-imports.
 
 ### Usage of RatSass
 
+The `RatSass` plugin does the main magic and also generates the desired output directly, unless the `RatSassOutput` 
+plugin is passed in the inner scoped `output.plugins` rollup definition.
+
 ```javascript
 import { RatSass } from '@rat.md/rollup-plugin-sass';
 
@@ -74,10 +78,12 @@ export default {
 
 ### Usage of RatSassOutput
 
-The `RatSassOutput` plugin can only be used with `RatSass` together.
+The `RatSassOutput` plugin allows you to adapt the css compilation per rollup output definition and can ONLY be used 
+together with `RatSass` together as outer-scoped plugin.
 
 ```javascript
 import { RatSass, RatSassOutput } from '@rat.md/rollup-plugin-sass';
+import { terser } from 'rollup-plugin-terser';
 
 export default {
     input: 'src/index.js',
@@ -90,10 +96,13 @@ export default {
             ]
         },
         {
-            file: 'dist/script.js',
+            file: 'dist/script.min.js',
             format: 'cjs',
             plugins: [
-                RatSassOutput(/* Provide output-related options */)
+                RatSassOutput(/* Provide output-related options */ {
+                    outputStyle: 'compressed'
+                }),
+                terser()
             ]
         }
     ],
@@ -106,19 +115,34 @@ export default {
 
 ### Usage of RatSassSkip
 
-```javascript
-import { RatSassSkip } from '@rat.md/rollup-plugin-sass';
+The `RatSassSkip` package will just ignore all stylesheet imports, useful if you need to export multiple versions of 
+your JavaScript on multiple rollup definitions, without re-compiling the same stylesheets again.
 
-export default {
-    input: 'src/index.js',
-    output: {
-        file: 'dist/script.js',
-        format: 'cjs'
+```javascript
+import { RatSass, RatSassSkip } from '@rat.md/rollup-plugin-sass';
+
+export default [
+    {
+        input: 'src/index.js',
+        output: {
+            file: 'dist/script.js',
+            format: 'cjs'
+        },
+        plugins: [
+            RatSass()
+        ]
     },
-    plugins: [
-        RatSassSkip()
-    ]
-};
+    {
+        input: 'src/index.js',
+        output: {
+            file: 'dist/script.js',
+            format: 'es'
+        },
+        plugins: [
+            RatSassSkip()
+        ]
+    }
+];
 ```
 
 

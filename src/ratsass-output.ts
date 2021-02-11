@@ -1,21 +1,13 @@
 
-import { OutputAsset, OutputBundle, OutputOptions } from 'rollup';
+import { InputOptions, OutputAsset, OutputBundle, OutputOptions } from 'rollup';
 
 /*
  |  ROLLUP PLUGIN
  */
 function RatSassOutput(config: RatSassOutputConfig = { }) {
     const sass = require('sass');
-    const parentConfig = { } as RatSassPluginConfig;
-    const includes = config.includePaths || ['node_modules'];
-    includes.push(process.cwd());
-
-    // Set Parent Options
-    const setParentOptions = (parent: RatSassPluginConfig) => {
-        for (let key in parent) {
-            parentConfig[key] = parent[key];
-        }
-    };
+    var instance = null;
+    var includes = [process.cwd()];
 
     // Compile Function
     const compile = (styles: string, overwrite?: RatSassPluginConfig): RatSassRenderedChunk | RatSassErrorHandler => {
@@ -24,9 +16,11 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
                 data: styles,
                 includePaths: includes
             }, config, overwrite));
+            data.css = data.css.toString();
 
+            // Return
             return {
-                css: data.css.toString(),
+                css: data.css,
                 map: (data.map || "").toString()
             };
         } catch (e) {
@@ -44,8 +38,36 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
         }
     };
 
+    // Set Instance Function
+    const _setInstance = function(ratInstance, ratIncludes) {
+        instance = ratInstance;
+        includes = ratIncludes;
+    }
+
+    // Render Start Function
+    const renderStart = function(outputOptions: OutputOptions, inputOptions: InputOptions) {
+        instance = null;
+        includes = [process.cwd()];
+
+        // Get Instance
+        for (let key in inputOptions.plugins) {
+            if (inputOptions.plugins[key].name === 'rat-sass') {
+                instance = inputOptions.plugins[key];
+            }
+        }
+
+        // Handle Includes
+        if (instance) {
+            includes.concat(instance._getIncludes());
+        }
+    };
+
     // Generate Bundle Function
     const generateBundle = function (options: OutputOptions, bundle: OutputBundle, isWrite: boolean) {
+        if (instance === null) {
+            this.error('The RatSassOutput plugin cannot be used without the RatSass plugin.');
+            return;
+        }
 
         // Trickle SourceMap Configuration
         if (typeof config.sourceMap === 'undefined') {
@@ -65,6 +87,11 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
                 continue;
             }
             let file = bundle[name] as OutputAsset;
+
+            // Get Bundled Content
+            if (file.source === '@bundle' && instance !== null) {
+                file.source = instance._getBundle();
+            }
             
             // Justify FileName
             file.fileName = file.fileName.substr(0, file.fileName.length - 4);
@@ -83,7 +110,7 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
 
             // Compile SASS
             var data = compile(file.source as string, {
-                outFile: name
+                outFile: name.replace(':css', '')
             });
             if ('error' in data) {
                 this.error(data.error, data.position);
@@ -151,8 +178,11 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
     // Return Rollup Plugin
     return {
         name: "rat-sass-output",
+        renderStart,
         generateBundle,
-        setParentOptions
+
+        // Custom Functions
+        _setInstance
     };
 }
 
