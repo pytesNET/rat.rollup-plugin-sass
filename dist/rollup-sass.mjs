@@ -1,8 +1,8 @@
 import { basename, dirname } from 'path';
-import { createFilter } from 'rollup-pluginutils';
+import { createFilter } from '@rollup/pluginutils';
 
+const sass = require('sass');
 function RatSassOutput(config = {}) {
-    const sass = require('sass');
     var instance = null;
     var includes = [process.cwd()];
     const compile = (styles, overwrite) => {
@@ -167,7 +167,7 @@ function RatSassOutput(config = {}) {
 }
 
 function RatSass(config = {}) {
-    const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
+    const filter = createFilter(config.include || ['**/*.css', '**/*.scss', '**/*.sass'], config.exclude);
     const chunks = { length: 0, reference: undefined };
     const includes = config.includePaths || ['node_modules'];
     includes.push(process.cwd());
@@ -190,7 +190,7 @@ function RatSass(config = {}) {
         }
         includes.push(dirname(id));
         if ('watch' in config) {
-            let files = Array.isArray(config.watch) ? config.watch : [config.watch];
+            let files = (Array.isArray(config.watch) ? config.watch : [config.watch]);
             files.forEach((file) => this.addWatchFile(file));
         }
         if (typeof config.fileNames !== 'undefined') {
@@ -254,7 +254,7 @@ function RatSass(config = {}) {
 }
 
 function RatSassSkip(config = {}) {
-    const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
+    const filter = createFilter(config.include || ['**/*.css', '**/*.scss', '**/*.sass'], config.exclude);
     return {
         name: 'rat-sass-skip',
         transform(code, id) {

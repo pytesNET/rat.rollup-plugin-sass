@@ -14,7 +14,7 @@ export default {
         }
     ],
     external: [
-        'fs', 'path', 'rollup-pluginutils'
+        'fs', 'path', '@rollup/pluginutils'
     ],
     plugins: [
         typescript()

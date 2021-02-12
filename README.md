@@ -29,7 +29,7 @@ Installation
 ------------
 
 -   **Requires** node.js 14.13.0 or above
--   **Tested** with Rollup 2.33.3 only
+-   **Tested** with Rollup 2.30 and above only
 
 Get the latest version of our Rat SASS Rollup Plugin using npm or yarn:
 

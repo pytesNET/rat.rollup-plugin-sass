@@ -1,12 +1,12 @@
 
 import { OutputOptions, SourceDescription } from 'rollup';
-import { createFilter } from 'rollup-pluginutils';
+import { createFilter } from '@rollup/pluginutils';
 
 /*
  |  ROLLUP PLUGIN
  */
 function RatSassSkip(config: RatSassBasicConfig = { }) {
-    const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
+    const filter = createFilter(config.include || ['**/*.css', '**/*.scss', '**/*.sass'], config.exclude);
 
     // Return Rollup Plugin
     return {

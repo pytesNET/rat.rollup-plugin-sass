@@ -1,7 +1,7 @@
 
 import { basename, dirname } from 'path';
 import { EmittedAsset, OutputBundle, OutputOptions, SourceDescription } from 'rollup';
-import { createFilter } from 'rollup-pluginutils';
+import { createFilter } from '@rollup/pluginutils';
 import RatSassOutput from './ratsass-output';
 
 
@@ -9,7 +9,7 @@ import RatSassOutput from './ratsass-output';
  |  ROLLUP PLUGIN
  */
 function RatSass(config: RatSassPluginConfig = { }) {
-    const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
+    const filter = createFilter(config.include || ['**/*.css', '**/*.scss', '**/*.sass'], config.exclude);
     const chunks = { length: 0, reference: undefined };
     const includes = config.includePaths || ['node_modules'];
     includes.push(process.cwd());
@@ -28,7 +28,6 @@ function RatSass(config: RatSassPluginConfig = { }) {
         return config;
     };
     
-
     // Get Includes Function
     const _getIncludes = function () {
         return includes;
@@ -43,7 +42,7 @@ function RatSass(config: RatSassPluginConfig = { }) {
 
         // Attach Watchers
         if ('watch' in config) {
-            let files = Array.isArray(config.watch)? config.watch: [config.watch];
+            let files = (Array.isArray(config.watch)? config.watch: [config.watch]) as string[];
             files.forEach((file) => this.addWatchFile(file));
         }
 

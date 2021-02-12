@@ -1,8 +1,10 @@
 Changelog
 =========
 
-Unreleased
-----------
+Version 0.2.0-alpha
+-------------------
+-   Update: Update `rollup` dev dependency.
+-   Update: Change `rollup-pluginutils` dependency to the new `@rollup/pluginutils`.
 -   Update: Move sass constant outside plugin function.
 -   Remove: Unused `InputOptions` type declaration on RatSass.
 -   Bugfix: Init parent config on RatSassOutput only, if the instance is available.
