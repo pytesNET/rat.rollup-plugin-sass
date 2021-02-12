@@ -3,7 +3,7 @@ Changelog
 
 Version 0.1.1-alpha
 -------------------
--   Add: Use the `fileNames` -applied wildcards and banner and footer too.
+-   Add: Use the `fileNames` -applied wildcards on the `banner` and `footer` options too.
 -   Bugfix: The sourcemap on minified files were invalid on RatSassOutput.
 -   Bugfix: RatSass configuration didn't applied on RatSassOutput.
 -   Bugfix: RatSass `banner` and `footer` callback options received an invalid filename.
