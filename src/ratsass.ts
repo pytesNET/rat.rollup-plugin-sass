@@ -57,6 +57,7 @@ function RatSass(config: RatSassPluginConfig = { }) {
             var emitdata: EmittedAsset = {
                 type: 'asset',
                 fileName: config.fileNames.replace(/\[name\]/g, emitname.join('.')).replace(/\[extname\]/g, '.css') + ':css',
+                name: emitname.join('.'),
                 source: code
             };
         } else {

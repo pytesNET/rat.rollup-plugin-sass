@@ -1,4 +1,4 @@
-import { dirname, basename } from 'path';
+import { basename, dirname } from 'path';
 import { createFilter } from 'rollup-pluginutils';
 
 function RatSassOutput(config = {}) {
@@ -45,7 +45,13 @@ function RatSassOutput(config = {}) {
             }
         }
         if (instance) {
-            includes.concat(instance._getIncludes());
+            includes = includes.concat(instance._getIncludes());
+        }
+        let parentConfig = instance._getConfig();
+        for (let key in parentConfig) {
+            if (!(key in config)) {
+                config[key] = parentConfig[key];
+            }
         }
     };
     const generateBundle = function (options, bundle, isWrite) {
@@ -84,7 +90,7 @@ function RatSassOutput(config = {}) {
                 }
             }
             var data = compile(file.source, {
-                outFile: name.replace(':css', '')
+                outFile: basename(file.fileName)
             });
             if ('error' in data) {
                 this.error(data.error, data.position);
@@ -110,19 +116,26 @@ function RatSassOutput(config = {}) {
             }
             if (typeof config.banner !== 'undefined') {
                 if (typeof config.banner === 'function') {
-                    data.css = config.banner(file.name) + "\n" + data.css;
+                    var banner = config.banner(file.name.replace(':css', ''));
                 }
                 else {
-                    data.css = config.banner + "\n" + data.css;
+                    var banner = config.banner;
                 }
+                banner = banner.replace(/\[name\]/g, file.name.replace(':css', ''))
+                    .replace(/\[extname\]/g, (config.outputStyle === 'compressed' ? '.min' : '') + '.css')
+                    .replace(/\[ext\]/g, 'css');
+                data.css = banner + "\n" + data.css;
             }
             if (typeof config.footer !== 'undefined') {
                 if (typeof config.footer === 'function') {
-                    var footer = config.footer(file.name) + "\n" + data.css;
+                    var footer = config.footer(file.name.replace(':css', ''));
                 }
                 else {
                     var footer = config.footer;
                 }
+                footer = footer.replace(/\[name\]/g, file.name.replace(':css', ''))
+                    .replace(/\[extname\]/g, (config.outputStyle === 'compressed' ? '.min' : '') + '.css')
+                    .replace(/\[ext\]/g, 'css');
                 let offset = data.css.lastIndexOf('/*#');
                 if (offset < 0) {
                     data.css += "\n" + footer;
@@ -184,6 +197,7 @@ function RatSass(config = {}) {
             var emitdata = {
                 type: 'asset',
                 fileName: config.fileNames.replace(/\[name\]/g, emitname.join('.')).replace(/\[extname\]/g, '.css') + ':css',
+                name: emitname.join('.'),
                 source: code
             };
         }

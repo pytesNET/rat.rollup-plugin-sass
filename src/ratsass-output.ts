@@ -1,4 +1,5 @@
 
+import { basename } from 'path';
 import { InputOptions, OutputAsset, OutputBundle, OutputOptions } from 'rollup';
 
 /*
@@ -58,7 +59,15 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
 
         // Handle Includes
         if (instance) {
-            includes.concat(instance._getIncludes());
+            includes = includes.concat(instance._getIncludes());
+        }
+
+        // Handle Config
+        let parentConfig = instance._getConfig();
+        for (let key in parentConfig) {
+            if (!(key in config)) {
+                config[key] = parentConfig[key];
+            }
         }
     };
 
@@ -110,7 +119,7 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
 
             // Compile SASS
             var data = compile(file.source as string, {
-                outFile: name.replace(':css', '')
+                outFile: basename(file.fileName)
             });
             if ('error' in data) {
                 this.error(data.error, data.position);
@@ -139,19 +148,26 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
             // Add Banner
             if (typeof config.banner !== 'undefined') {
                 if (typeof config.banner === 'function') {
-                    data.css = config.banner(file.name) + "\n" + data.css;
+                    var banner = config.banner(file.name.replace(':css', ''));
                 } else {
-                    data.css = config.banner + "\n" + data.css;
+                    var banner = config.banner;
                 }
+                banner = banner.replace(/\[name\]/g, file.name.replace(':css', ''))
+                               .replace(/\[extname\]/g, (config.outputStyle === 'compressed'? '.min': '') + '.css')
+                               .replace(/\[ext\]/g, 'css');
+                data.css = banner + "\n" + data.css;
             }
 
             // Add Footer
             if (typeof config.footer !== 'undefined') {
                 if (typeof config.footer === 'function') {
-                    var footer = config.footer(file.name) + "\n" + data.css;
+                    var footer = config.footer(file.name.replace(':css', ''));
                 } else {
                     var footer = config.footer;
                 }
+                footer = footer.replace(/\[name\]/g, file.name.replace(':css', ''))
+                               .replace(/\[extname\]/g, (config.outputStyle === 'compressed'? '.min': '') + '.css')
+                               .replace(/\[ext\]/g, 'css');
 
                 let offset = data.css.lastIndexOf('/*#');
                 if (offset < 0) {
