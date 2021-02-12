@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 0.1.2-alpha
+-------------------
+-   Update: Adapt `package.json` to just distribute the distribution and typings files.
+-   Update: Extend `package.json` with typings index.
+
 Version 0.1.1-alpha
 -------------------
 -   Add: Use the `fileNames` -applied wildcards on the `banner` and `footer` options too.

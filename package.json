@@ -1,6 +1,6 @@
 {
     "name": "@rat.md/rollup-plugin-sass",
-    "version": "0.1.1-alpha",
+    "version": "0.1.2-alpha",
     "status": "alpha",
     "description": "A SASS / SCSS rollup plugin, especially designed for the development of our rat products.",
     "keywords": [
@@ -51,6 +51,11 @@
         "import": "./dist/rollup-sass.mjs",
         "require": "./dist/rollup-sass.js"
     },
+    "files": [
+        "dist/*.js",
+        "src/types/*d.ts"
+    ],
+    "typings": "src/types/ratsass.d.ts",
     "reveal": true,
     "dependencies": {
         "rollup-pluginutils": "^2.8.2",
