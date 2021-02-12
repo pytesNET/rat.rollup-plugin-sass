@@ -1,6 +1,6 @@
 
 import { basename, dirname } from 'path';
-import { EmittedAsset, InputOptions, OutputBundle, OutputOptions, SourceDescription } from 'rollup';
+import { EmittedAsset, OutputBundle, OutputOptions, SourceDescription } from 'rollup';
 import { createFilter } from 'rollup-pluginutils';
 import RatSassOutput from './ratsass-output';
 

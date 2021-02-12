@@ -43,7 +43,7 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
     const _setInstance = function(ratInstance, ratIncludes) {
         instance = ratInstance;
         includes = ratIncludes;
-    }
+    };
 
     // Render Start Function
     const renderStart = function(outputOptions: OutputOptions, inputOptions: InputOptions) {
@@ -57,16 +57,17 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
             }
         }
 
-        // Handle Includes
+        // Handle Instance Functions
         if (instance) {
             includes = includes.concat(instance._getIncludes());
-        }
-
-        // Handle Config
-        let parentConfig = instance._getConfig();
-        for (let key in parentConfig) {
-            if (!(key in config)) {
-                config[key] = parentConfig[key];
+            
+            let parentConfig = instance._getConfig();
+            if (parentConfig) {
+                for (let key in parentConfig) {
+                    if (!(key in config)) {
+                        config[key] = parentConfig[key];
+                    }
+                }
             }
         }
     };

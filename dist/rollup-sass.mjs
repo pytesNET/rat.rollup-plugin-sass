@@ -46,11 +46,13 @@ function RatSassOutput(config = {}) {
         }
         if (instance) {
             includes = includes.concat(instance._getIncludes());
-        }
-        let parentConfig = instance._getConfig();
-        for (let key in parentConfig) {
-            if (!(key in config)) {
-                config[key] = parentConfig[key];
+            let parentConfig = instance._getConfig();
+            if (parentConfig) {
+                for (let key in parentConfig) {
+                    if (!(key in config)) {
+                        config[key] = parentConfig[key];
+                    }
+                }
             }
         }
     };

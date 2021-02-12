@@ -1,9 +1,14 @@
 Changelog
 =========
 
+Unreleased
+----------
+-   Remove: Unused `InputOptions` type declaration on RatSass.
+-   Bugfix: Init parent config on RatSassOutput only, if the instance is available.
+
 Version 0.1.3-alpha
 -------------------
--   Fix: `package.json` - forget to add the `*.mjs` version of the rollup plugin.
+-   Hotfix: `package.json` - forget to add the `*.mjs` version of the rollup plugin.
 
 Version 0.1.2-alpha
 -------------------
