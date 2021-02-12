@@ -34,11 +34,11 @@ Installation
 Get the latest version of our Rat SASS Rollup Plugin using npm or yarn:
 
 ```
-npm install --save-dev @rat.md/rollup-plugin-tsm
+npm install --save-dev @rat.md/rollup-plugin-sass
 ```
 
 ```
-yarn add --dev @rat.md/rollup-plugin-tsm
+yarn add --dev @rat.md/rollup-plugin-sass
 ```
 
 
