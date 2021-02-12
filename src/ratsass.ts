@@ -9,8 +9,6 @@ import RatSassOutput from './ratsass-output';
  |  ROLLUP PLUGIN
  */
 function RatSass(config: RatSassPluginConfig = { }) {
-    var self = null;
-
     const filter = createFilter(config.include || ['/**/*.css', '/**/*.scss', '/**/*.sass'], config.exclude);
     const chunks = { length: 0, reference: undefined };
     const includes = config.includePaths || ['node_modules'];
