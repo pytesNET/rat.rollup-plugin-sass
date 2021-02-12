@@ -3,6 +3,7 @@ Changelog
 
 Unreleased
 ----------
+-   Update: Move sass constant outside plugin function.
 -   Remove: Unused `InputOptions` type declaration on RatSass.
 -   Bugfix: Init parent config on RatSassOutput only, if the instance is available.
 

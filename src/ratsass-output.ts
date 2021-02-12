@@ -2,11 +2,12 @@
 import { basename } from 'path';
 import { InputOptions, OutputAsset, OutputBundle, OutputOptions } from 'rollup';
 
+const sass = require('sass');
+
 /*
  |  ROLLUP PLUGIN
  */
 function RatSassOutput(config: RatSassOutputConfig = { }) {
-    const sass = require('sass');
     var instance = null;
     var includes = [process.cwd()];
 
