@@ -28,13 +28,18 @@ Differences to [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-s
 Installation
 ------------
 
-The most recommended way to get the Rat SASS Plugin is by using npm:
+-   **Requires** node.js 14.13.0 or above
+-   **Tested** with Rollup 2.33.3 only
+
+Get the latest version of our Rat SASS Rollup Plugin using npm or yarn:
 
 ```
-npm install --save-dev @rat.md/rollup-plugin-sass
+npm install --save-dev @rat.md/rollup-plugin-tsm
 ```
 
-**Important** This Rollup Plugin has ONLY been tested with Rollup 2 (v2.33.3) and REQUIRES node 14.13.0 or above!
+```
+yarn add --dev @rat.md/rollup-plugin-tsm
+```
 
 
 Usage
