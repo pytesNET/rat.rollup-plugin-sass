@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 0.1.3-alpha
+-------------------
+-   Fix: `package.json` - forget to add the `*.mjs` version of the rollup plugin.
+
 Version 0.1.2-alpha
 -------------------
 -   Update: Adapt `package.json` to just distribute the distribution and typings files.
