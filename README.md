@@ -1,5 +1,9 @@
 @RAT - SASS Rollup Plugin
 =========================
+[![Minfied Size](https://b.rat.md/select/~minified)](https://b.rat.md/select/+minified)
+[![Version](https://b.rat.md/select/~version)](https://b.rat.md/select/+version)
+[![Downloads](https://b.rat.md/select/~downloads)](https://b.rat.md/select/+downloads)
+[![Support](https://b.rat.md/global/~bmac)](https://b.rat.md/global/+bmac)
 
 A SASS / SCSS Compiler and Bundler Plugin for [rollup](https://rollupjs.org), which is mainly designed for our own 
 rat and tail products and packages. It supports SourceMaps, relative SourceMap Source URLs, separate assets / 
