@@ -1,8 +1,8 @@
 @RAT - SASS Rollup Plugin
 =========================
-[![Minfied Size](https://b.rat.md/select/~minified)](https://b.rat.md/select/+minified)
-[![Version](https://b.rat.md/select/~version)](https://b.rat.md/select/+version)
-[![Downloads](https://b.rat.md/select/~downloads)](https://b.rat.md/select/+downloads)
+[![Minfied Size](https://b.rat.md/rollup-plugin-sass/~minified)](https://b.rat.md/rollup-plugin-sass/+minified)
+[![Version](https://b.rat.md/rollup-plugin-sass/~version)](https://b.rat.md/rollup-plugin-sass/+version)
+[![Downloads](https://b.rat.md/rollup-plugin-sass/~downloads)](https://b.rat.md/rollup-plugin-sass/+downloads)
 [![Support](https://b.rat.md/global/~bmac)](https://b.rat.md/global/+bmac)
 
 A SASS / SCSS Compiler and Bundler Plugin for [rollup](https://rollupjs.org), which is mainly designed for our own 
