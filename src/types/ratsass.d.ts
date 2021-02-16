@@ -1,4 +1,5 @@
 
+import { SassConfig } from './sass.d';
 import { OutputAsset, OutputBundle, OutputOptions } from 'rollup';
 
 export declare interface RatSassBasicConfig {

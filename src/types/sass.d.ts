@@ -1,5 +1,5 @@
 
-declare interface SassConfig {
+export declare interface SassConfig {
     /*
      |  THE STYLES, WHICH SHOULD BE COMPILED
      */
