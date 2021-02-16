@@ -110,6 +110,7 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
                 file.source = instance._getBundle();
             }
             file.name = file.name.replace(':css', '');
+            file.fileName = file.fileName.replace(':css', '');
 
             // Preprocess File
             if (typeof config.preprocess === 'function') {

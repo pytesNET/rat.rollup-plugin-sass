@@ -108,7 +108,7 @@ test('RatSass - Default with customized output', async (t) => {
     });
     const expected = [
         '/* Start */\n*,\n*:before,\n*:after {\n  box-sizing: inherit;\n}\n\nhtml, body {\n  color: red;\n}\nhtml div, body div {\n  color: orange;\n}\n\n/* End */\n/*# sourceMappingURL=index-93cf0468.css.map */',
-        '{\"version\":3,\"sourceRoot\":\"\",\"sources\":[\"./tests/global/index.scss\",\"assets/index-93cf0468.css\"],\"names\":[],\"mappings\":\"AACA;AAAA;AAAA;EAGI;;;ACHJ;EACI;;AAEA;EACI\",\"file\":\"index-93cf0468.css\"}'
+        '{\"version\":3,\"sourceRoot\":\"\",\"sources\":[\"../tests/global/index.scss\",\"assets/index-93cf0468.css:css\"],\"names\":[],\"mappings\":\"AACA;AAAA;AAAA;EAGI;;;ACHJ;EACI;;AAEA;EACI\",\"file\":\"index-93cf0468.css\"}'
     ];
 
     // Compare Result

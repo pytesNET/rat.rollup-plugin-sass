@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 0.3.1
+-------------
+-   Bugfix: Fixed tests.
+-   Bugfix: Doesn't remove the `:css` part on the asset's `fileName`.
+
 Version 0.3.0
 -------------
 -   Add: The new `minifiedExtension` configuration, allows to add '.min.css' automatically.

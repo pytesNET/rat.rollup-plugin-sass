@@ -84,6 +84,7 @@ function RatSassOutput(config = {}) {
                 file.source = instance._getBundle();
             }
             file.name = file.name.replace(':css', '');
+            file.fileName = file.fileName.replace(':css', '');
             if (typeof config.preprocess === 'function') {
                 file = config.preprocess.call(this, file, config, options, bundle);
             }
