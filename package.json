@@ -1,6 +1,6 @@
 {
     "name": "@rat.md/rollup-plugin-sass",
-    "version": "0.2.0-alpha",
+    "version": "0.3.0",
     "status": "alpha",
     "description": "A SASS / SCSS rollup plugin, especially designed for the development of our rat products.",
     "keywords": [
