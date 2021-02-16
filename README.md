@@ -22,11 +22,9 @@ Differences to [thgh/rollup-plugin-scss](https://github.com/thgh/rollup-plugin-s
 -   Adds a few more options, such as banner and footer.
 -   Requires node.js version 14.13.0 or above.
 -   Written in TypeScript.
--   Does not support postcss and (pre-) processors in general.
 -   Does not support using other SASS libraries (DartSASS is the only supported lib).
 -   Fails on error per default (not changable).
 -   Skipping SASS imports must be done with `RatSassSkip` instead of `output: false`.
--   Provided functions are not (really) compatible.
 
 
 Installation
@@ -186,7 +184,7 @@ ID must match one or more of the picomatch patterns, and must not match any of t
 
 ### fileNames
 > Available for: `RatSass`<br>
-> Types: `string | (name: string) => string`
+> Types: `string | (name: string, id: string) => string`
 
 Allows you to overwrite the default used `rollup.assetFileNames` option, which defines where and with which name scheme 
 the stylesheets will be stored / bundled. This option allows you to use the following placeholders:
@@ -218,6 +216,14 @@ array of patterns. If options.include is omitted or has zero length, filter will
 ID must match one or more of the picomatch patterns, and must not match any of the options.exclude patterns.
 
 
+### minifiedExtension
+> Available for: `RatSass` and `RatSassOutput`<br>
+> Types: `boolean`
+
+True will automatically turn `.css` extensions into `.min.css` if the `outputStyle` option is set 
+to `compressed`, which is really helpful for bundle generations on 2-styled outputs.
+
+
 ### prefix
 > Available for: `RatSass` and `RatSassOutput`<br>
 > Types: `string | (name: string) => string`
@@ -225,6 +231,20 @@ ID must match one or more of the picomatch patterns, and must not match any of t
 Adds additional SASS / SCSS / CSS content to each styleset, before they get compiled. Very useful to add some variables 
 or mixins. You can use either a hardcoded string or a function, which receives the current stylesheet filename and which 
 MUST return the prefix content as string.
+
+
+### preprocess
+>   Available for: `RatSass` and `RatSassOutput`<br>
+>   Types: `(file: OutputAsset, config: RatSassOutputConfig, options: OutputOptions, bundle: OutputBundle) => OutputAsset`
+
+Adds a hook on the top of the main `generateBundle` method, which allows you to modify the output asset.
+
+
+### postprocess
+>   Available for: `RatSass` and `RatSassOutput`<br>
+>   Types: `(file: OutputAsset, config: RatSassOutputConfig, options: OutputOptions, bundle: OutputBundle) => OutputAsset`
+
+Adds a hook on the bottom of the main `generateBundle` method, which allows you to modify the output asset.
 
 
 ### sourceMapUrls

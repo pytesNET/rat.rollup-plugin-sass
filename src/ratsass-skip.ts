@@ -1,6 +1,7 @@
 
 import { OutputOptions, SourceDescription } from 'rollup';
 import { createFilter } from '@rollup/pluginutils';
+import { RatSassBasicConfig } from './types/ratsass.d';
 
 /*
  |  ROLLUP PLUGIN

@@ -83,13 +83,17 @@ function RatSassOutput(config = {}) {
             if (file.source === '@bundle' && instance !== null) {
                 file.source = instance._getBundle();
             }
-            file.fileName = file.fileName.substr(0, file.fileName.length - 4);
-            if (config.outputStyle === 'compressed') {
-                file.fileName = file.fileName.replace('.css', '.min.css');
+            file.name = file.name.replace(':css', '');
+            if (typeof config.preprocess === 'function') {
+                file = config.preprocess.call(this, file, config, options, bundle);
+            }
+            if (config.minifiedExtension === true || config.outputStyle === 'compressed') {
+                file.fileName = file.fileName.replace(/\.css$/, '.min.css');
+                file.name = file.name.replace(/\.css$/, '.min.css');
             }
             if (typeof config.prefix !== 'undefined') {
                 if (typeof config.prefix === 'function') {
-                    file.source = config.prefix.call(file.name) + file.source;
+                    file.source = config.prefix(file.name, file) + file.source;
                 }
                 else {
                     file.source = config.prefix + file.source;
@@ -111,9 +115,9 @@ function RatSassOutput(config = {}) {
                         }
                         else {
                             if (url === 'stdin') {
-                                url = name.replace(':css', '');
+                                url = name;
                             }
-                            url = url.replace(/^file\:\/+/, '').replace(process.cwd().replace(/\\/g, '/'), '.');
+                            url = url.replace(/^file\:\/+/, '').replace(process.cwd().replace(/\\/g, '/'), '..');
                             return url;
                         }
                     });
@@ -122,24 +126,24 @@ function RatSassOutput(config = {}) {
             }
             if (typeof config.banner !== 'undefined') {
                 if (typeof config.banner === 'function') {
-                    var banner = config.banner(file.name.replace(':css', ''));
+                    var banner = config.banner(file.name, file);
                 }
                 else {
                     var banner = config.banner;
                 }
-                banner = banner.replace(/\[name\]/g, file.name.replace(':css', ''))
+                banner = banner.replace(/\[name\]/g, file.name)
                     .replace(/\[extname\]/g, (config.outputStyle === 'compressed' ? '.min' : '') + '.css')
                     .replace(/\[ext\]/g, 'css');
                 data.css = banner + "\n" + data.css;
             }
             if (typeof config.footer !== 'undefined') {
                 if (typeof config.footer === 'function') {
-                    var footer = config.footer(file.name.replace(':css', ''));
+                    var footer = config.footer(file.name, file);
                 }
                 else {
                     var footer = config.footer;
                 }
-                footer = footer.replace(/\[name\]/g, file.name.replace(':css', ''))
+                footer = footer.replace(/\[name\]/g, file.name)
                     .replace(/\[extname\]/g, (config.outputStyle === 'compressed' ? '.min' : '') + '.css')
                     .replace(/\[ext\]/g, 'css');
                 let offset = data.css.lastIndexOf('/*#');
@@ -151,6 +155,9 @@ function RatSassOutput(config = {}) {
                 }
             }
             file.source = data.css;
+            if (typeof config.postprocess === 'function') {
+                file = config.postprocess.call(this, file, config, options, bundle);
+            }
             if (data.map && data.map.length > 0) {
                 bundle[name + '.map'] = {
                     fileName: file.fileName + '.map',
@@ -198,6 +205,9 @@ function RatSass(config = {}) {
             files.forEach((file) => this.addWatchFile(file));
         }
         if (typeof config.fileNames !== 'undefined') {
+            if (typeof config.fileNames === 'function') {
+                config.fileNames = config.fileNames(path.basename(id), id);
+            }
             let emitname = path.basename(id).split('.');
             emitname.pop();
             var emitdata = {

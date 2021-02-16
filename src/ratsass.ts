@@ -2,7 +2,9 @@
 import { basename, dirname } from 'path';
 import { EmittedAsset, OutputBundle, OutputOptions, SourceDescription } from 'rollup';
 import { createFilter } from '@rollup/pluginutils';
+
 import RatSassOutput from './ratsass-output';
+import { RatSassPluginConfig } from './types/ratsass.d';
 
 
 /*
@@ -48,6 +50,9 @@ function RatSass(config: RatSassPluginConfig = { }) {
 
         // Handle FileNameHandler
         if (typeof config.fileNames !== 'undefined') {
+            if (typeof config.fileNames === 'function') {
+                config.fileNames = config.fileNames(basename(id), id);
+            }
             let emitname = basename(id).split('.');
             emitname.pop();
 
