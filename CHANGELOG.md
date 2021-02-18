@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 0.3.2
+-------------
+-   Update: Dependencies.
+
 Version 0.3.1
 -------------
 -   Bugfix: Fixed tests.
