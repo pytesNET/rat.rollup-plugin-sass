@@ -100,17 +100,15 @@ function RatSassOutput(config: RatSassOutputConfig = { }) {
         // Loop Styles
         let keys = Object.keys(bundle);
         for (let name of keys) {
-            if (name.lastIndexOf(':css') !== name.length - 4) {
+            if (name.indexOf('.css') !== name.length-4) {
                 continue;
             }
 
-            // Prepare File
+            // Get bundlded File
             let file = bundle[name] as OutputAsset;
             if (file.source === '@bundle' && instance !== null) {
                 file.source = instance._getBundle();
             }
-            file.name = file.name.replace(':css', '');
-            file.fileName = file.fileName.replace(':css', '');
 
             // Preprocess File
             if (typeof config.preprocess === 'function') {

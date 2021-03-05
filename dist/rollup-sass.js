@@ -76,15 +76,13 @@ function RatSassOutput(config = {}) {
         }
         let keys = Object.keys(bundle);
         for (let name of keys) {
-            if (name.lastIndexOf(':css') !== name.length - 4) {
+            if (name.indexOf('.css') !== name.length - 4) {
                 continue;
             }
             let file = bundle[name];
             if (file.source === '@bundle' && instance !== null) {
                 file.source = instance._getBundle();
             }
-            file.name = file.name.replace(':css', '');
-            file.fileName = file.fileName.replace(':css', '');
             if (typeof config.preprocess === 'function') {
                 file = config.preprocess.call(this, file, config, options, bundle);
             }
@@ -213,14 +211,14 @@ function RatSass(config = {}) {
             emitname.pop();
             var emitdata = {
                 type: 'asset',
-                fileName: config.fileNames.replace(/\[name\]/g, emitname.join('.')).replace(/\[extname\]/g, '.css') + ':css',
+                fileName: config.fileNames.replace(/\[name\]/g, emitname.join('.')).replace(/\[extname\]/g, '.css'),
                 name: emitname.join('.'),
                 source: code
             };
         }
         else {
             let emitname = path.basename(id).split('.');
-            emitname[emitname.length - 1] = 'css:css';
+            emitname[emitname.length - 1] = 'css';
             var emitdata = {
                 type: 'asset',
                 name: emitname.join('.'),

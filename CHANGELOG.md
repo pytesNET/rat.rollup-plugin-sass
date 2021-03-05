@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 0.3.3
+-------------
+-   Add: Our own custom zora test reporter.
+-   Update: Remove internal `:css` suffix and directly check for `.css` extensions.
+-   Bugfix: Invalid `entryFileName` on bundled stylesheets.
+
 Version 0.3.2
 -------------
 -   Update: Dependencies.

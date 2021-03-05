@@ -58,13 +58,13 @@ function RatSass(config: RatSassPluginConfig = { }) {
 
             var emitdata: EmittedAsset = {
                 type: 'asset',
-                fileName: config.fileNames.replace(/\[name\]/g, emitname.join('.')).replace(/\[extname\]/g, '.css') + ':css',
+                fileName: config.fileNames.replace(/\[name\]/g, emitname.join('.')).replace(/\[extname\]/g, '.css'),
                 name: emitname.join('.'),
                 source: code
             };
         } else {
             let emitname = basename(id).split('.');
-            emitname[emitname.length - 1] = 'css:css';
+            emitname[emitname.length-1] = 'css';
 
             var emitdata: EmittedAsset = {
                 type: 'asset',
